@@ -19,7 +19,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ChestMenu;
-import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -215,14 +214,14 @@ public class SpawnerProtect extends Module {
         }
 
         // Chest GUI is open -> shift-click spawners in.
-        if (mc.player.containerMenu instanceof ChestMenu menu && mc.screen != null) {
+        if (mc.player.containerMenu instanceof ChestMenu menu) {
             if (actionTimer-- > 0) return;
             actionTimer = depositDelay.get();
 
             int chestSlots = menu.getRowCount() * 9;
             for (int i = chestSlots; i < menu.slots.size(); i++) {
                 if (menu.getSlot(i).getItem().is(Items.SPAWNER)) {
-                    mc.gameMode.handleInventoryMouseClick(menu.containerId, i, 0, ClickType.QUICK_MOVE, mc.player);
+                    InvUtils.shiftClick().slotId(i);
                     noProgressTicks = 0;
                     return;
                 }
